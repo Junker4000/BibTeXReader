@@ -5,7 +5,7 @@ import java.util.Map;
 public class BibtexEntity {
 
     private String documentType;
-    private String bibtexId;
+    private String documentId;
     private Map<String, String> contentMap;
 
     public String getDocumentType() {
@@ -16,12 +16,12 @@ public class BibtexEntity {
         this.documentType = documentType;
     }
 
-    public String getBibtexId() {
-        return bibtexId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setBibtexId(String bibtexId) {
-        this.bibtexId = bibtexId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public Map<String, String> getContentMap() {
@@ -34,14 +34,14 @@ public class BibtexEntity {
 
     @Override
     public int hashCode() {
-        return documentType.hashCode() * 31 + bibtexId.hashCode() * 15 + contentMap.hashCode();
+        return documentType.hashCode() * 31 + documentId.hashCode() * 15 + contentMap.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof BibtexEntity) {
             BibtexEntity bibtexEntity = (BibtexEntity) obj;
-            return documentType.equals(bibtexEntity.documentType) && bibtexId.equals(bibtexEntity.bibtexId)
+            return documentType.equals(bibtexEntity.documentType) && documentId.equals(bibtexEntity.documentId)
                     && contentMap.equals(bibtexEntity.contentMap);
         } else {
             return false;
@@ -50,7 +50,7 @@ public class BibtexEntity {
 
     @Override
     public String toString() {
-        return BibtexParser.fromEntity(this);
+        return "@".concat(documentType).concat(" id=").concat(documentId);
     }
 
 }
