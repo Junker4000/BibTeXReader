@@ -1,12 +1,13 @@
 package cn.susc.bibtexreader.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class BibtexEntity {
 
     private String documentType;
     private String documentId;
-    private Map<String, String> contentMap;
+    private Map<String, String> contentMap = new HashMap<>();
 
     public String getDocumentType() {
         return documentType;
@@ -50,7 +51,14 @@ public class BibtexEntity {
 
     @Override
     public String toString() {
-        return "@".concat(documentType).concat(" id=").concat(documentId);
+        StringBuilder result = new StringBuilder("BibtexEntity: ");
+        if (documentType == null || documentId == null) {
+            result.append("empty");
+        } else {
+            result.append("Type: ").append(documentType).append("; ID: ").append(documentId);
+            result.append("; Size of Attributes: ").append(contentMap.size());
+        }
+        return result.toString();
     }
 
 }
