@@ -9,15 +9,15 @@ import java.util.Stack;
 
 public class BibtexParser {
 
-    public static final char BEGIN_AT = '@';
-    public static final char CURLY_BRACKET_LEFT = '{';
-    public static final char CURLY_BRACKET_RIGHT = '}';
-    public static final char COMMA = ',';
-    public static final char EQUALS = '=';
-    public static final char SPACE = ' ';
-    public static final char NEW_LINE = '\n';
+    private static final char BEGIN_AT = '@';
+    private static final char CURLY_BRACKET_LEFT = '{';
+    private static final char CURLY_BRACKET_RIGHT = '}';
+    private static final char COMMA = ',';
+    private static final char EQUALS = '=';
+    private static final char SPACE = ' ';
+    private static final char NEW_LINE = '\n';
 
-    public static List<BibtexEntity> formString(String bibtexString) throws BibtexParseException {
+    public static List<BibtexEntity> fromString(String bibtexString) throws BibtexParseException {
         return fromStringInternal(bibtexString);
     }
 
@@ -110,7 +110,27 @@ public class BibtexParser {
     }
 
     public static String fromEntity(BibtexEntity bibtexEntity) throws BibtexParseException {
-        return null;
+        if (bibtexEntity == null) {
+            return null;
+        }
+        if (bibtexEntity.getDocumentType() == null || "".equals(bibtexEntity.getDocumentType())) {
+            throw new BibtexParseException("EMPTY_DOCUMENT_TYPE");
+        }
+        if (bibtexEntity.getDocumentId() == null || "".equals(bibtexEntity.getDocumentId())) {
+            throw new BibtexParseException("EMPTY_DOCUMENT_ID");
+        }
+        if (bibtexEntity.getContentMap() == null || bibtexEntity.getContentMap().isEmpty()) {
+            throw new BibtexParseException("EMPTY_ATTRIBUTES");
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append("@").append(bibtexEntity.getDocumentType()).append("{");
+        result.append(bibtexEntity.getDocumentId()).append(",\n");
+        for (Map.Entry<String, String> attribute : bibtexEntity.getContentMap().entrySet()) {
+            result.append("  ").append(attribute.getKey()).append("={").append(attribute.getValue()).append("},\n");
+        }
+        result.append("}");
+        return result.toString();
     }
 
 }
