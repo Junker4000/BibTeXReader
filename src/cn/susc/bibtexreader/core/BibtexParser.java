@@ -7,6 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import static cn.susc.bibtexreader.exception.BibtexParseExceptionCause.EMPTY_ATTRIBUTES;
+import static cn.susc.bibtexreader.exception.BibtexParseExceptionCause.EMPTY_ATTRIBUTE_NAME;
+import static cn.susc.bibtexreader.exception.BibtexParseExceptionCause.EMPTY_DOCUMENT_ID;
+import static cn.susc.bibtexreader.exception.BibtexParseExceptionCause.EMPTY_DOCUMENT_TYPE;
+
 public class BibtexParser {
 
     private static final char BEGIN_AT = '@';
@@ -58,13 +63,13 @@ public class BibtexParser {
                 case CURLY_BRACKET_RIGHT:
                     if (stack.size() == 2 && CURLY_BRACKET_LEFT == stack.peek()) {
                         if (currentEntity.getDocumentId() == null || "".equals(currentEntity.getDocumentId())) {
-                            throw new BibtexParseException("EMPTY_DOCUMENT_ID");
+                            throw new BibtexParseException(EMPTY_DOCUMENT_ID);
                         }
                         result.add(currentEntity);
                     } else if (stack.size() == 4 && CURLY_BRACKET_LEFT == stack.peek()) {
                         currentAttrValue = buffer.toString().trim();
                         if (currentAttrKey == null || "".equals(currentAttrKey)) {
-                            throw new BibtexParseException("EMPTY_ATTRIBUTE_NAME");
+                            throw new BibtexParseException(EMPTY_ATTRIBUTE_NAME);
                         }
                         currentEntity.getContentMap().put(currentAttrKey, currentAttrValue);
                         currentAttrKey = null;
@@ -114,13 +119,13 @@ public class BibtexParser {
             return null;
         }
         if (bibtexEntity.getDocumentType() == null || "".equals(bibtexEntity.getDocumentType())) {
-            throw new BibtexParseException("EMPTY_DOCUMENT_TYPE");
+            throw new BibtexParseException(EMPTY_DOCUMENT_TYPE);
         }
         if (bibtexEntity.getDocumentId() == null || "".equals(bibtexEntity.getDocumentId())) {
-            throw new BibtexParseException("EMPTY_DOCUMENT_ID");
+            throw new BibtexParseException(EMPTY_DOCUMENT_ID);
         }
         if (bibtexEntity.getContentMap() == null || bibtexEntity.getContentMap().isEmpty()) {
-            throw new BibtexParseException("EMPTY_ATTRIBUTES");
+            throw new BibtexParseException(EMPTY_ATTRIBUTES);
         }
 
         StringBuilder result = new StringBuilder();
