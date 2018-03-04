@@ -53,10 +53,11 @@ public class BibtexEntity {
     public String toString() {
         StringBuilder result = new StringBuilder("BibtexEntity: ");
         if (documentType == null || documentId == null) {
-            result.append("empty");
-        } else {
-            result.append("Type: ").append(documentType).append("; ID: ").append(documentId);
-            result.append("; Size of Attributes: ").append(contentMap.size());
+            return result.append("<empty>").toString();
+        }
+        result.append("\nType: ").append(documentType).append(";\nID: ").append(documentId);
+        for (Map.Entry<String, String> entry : contentMap.entrySet()) {
+            result.append("\n").append(entry.getKey()).append(": ").append(entry.getValue());
         }
         return result.toString();
     }
